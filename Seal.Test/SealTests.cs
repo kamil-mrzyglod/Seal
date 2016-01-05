@@ -12,26 +12,39 @@ namespace Seal.Test
     {
         private const string AssemblyPath = @"../../../../Seal.TestAssembly/bin/Debug/Seal.TestAssembly.dll";
 
+        private string _weavedAssemblyName;
+
         [SetUp]
         public void SetUp()
         {
+            _weavedAssemblyName = AssemblyDirectory + $"Seal.TestAssembly{DateTime.Now.Ticks}.dll";
+
             var md = ModuleDefinition.ReadModule(Path.GetFullPath(AssemblyDirectory + AssemblyPath));
             var weaver = new ModuleWeaver { ModuleDefinition = md };
 
             weaver.Execute();
-            md.Write(AssemblyDirectory + "Seal.TestAssembly2.dll");
+            md.Write(_weavedAssemblyName);
         }
 
         [Test]
         public void GivenNonSealedClass_ShouldSealIt()
         {
-            var assembly = Assembly.LoadFile(AssemblyDirectory + "Seal.TestAssembly2.dll");
+            var assembly = Assembly.LoadFile(_weavedAssemblyName);
             var type = assembly.GetExportedTypes().First(x => x.Name == "NonSealedClass");
 
             Assert.That(type.IsSealed, Is.True);
         }
 
-        public static string AssemblyDirectory
+        [Test]
+        public void GivenAbstractClass_ShouldLeaveItAsItIs()
+        {
+            var assembly = Assembly.LoadFile(_weavedAssemblyName);
+            var type = assembly.GetExportedTypes().First(x => x.Name == "AbstractClass");
+
+            Assert.That(type.IsSealed, Is.False);
+        }
+
+        private static string AssemblyDirectory
         {
             get
             {
