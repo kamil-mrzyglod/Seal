@@ -14,6 +14,8 @@ namespace Seal.Test
 
         private string _weavedAssemblyName;
 
+        private Assembly _assembly;
+
         [SetUp]
         public void SetUp()
         {
@@ -24,13 +26,14 @@ namespace Seal.Test
 
             weaver.Execute();
             md.Write(_weavedAssemblyName);
+
+            _assembly = Assembly.LoadFile(_weavedAssemblyName);
         }
 
         [Test]
         public void GivenNonSealedClass_ShouldSealIt()
         {
-            var assembly = Assembly.LoadFile(_weavedAssemblyName);
-            var type = assembly.GetExportedTypes().First(x => x.Name == "NonSealedClass");
+            var type = _assembly.GetExportedTypes().First(x => x.Name == "NonSealedClass");
 
             Assert.That(type.IsSealed, Is.True);
         }
@@ -38,10 +41,29 @@ namespace Seal.Test
         [Test]
         public void GivenAbstractClass_ShouldLeaveItAsItIs()
         {
-            var assembly = Assembly.LoadFile(_weavedAssemblyName);
-            var type = assembly.GetExportedTypes().First(x => x.Name == "AbstractClass");
+            var type = _assembly.GetExportedTypes().First(x => x.Name == "AbstractClass");
 
             Assert.That(type.IsSealed, Is.False);
+        }
+
+        [Test]
+        public void GivenBaseAndDerivedClass_ShouldMarkDerivedAsSealed()
+        {
+            var baseType = _assembly.GetExportedTypes().First(x => x.Name == "BaseClass");
+            var derivedType = _assembly.GetExportedTypes().First(x => x.Name == "DerivedClass");
+
+            Assert.That(baseType.IsSealed, Is.False);
+            Assert.That(derivedType.IsSealed, Is.True);
+        }
+
+        [Test]
+        public void GivenClassDerivingFromAbstractClass_ShouldMarkDerivedAsSealed()
+        {
+            var baseType = _assembly.GetExportedTypes().First(x => x.Name == "AbstractClass");
+            var derivedType = _assembly.GetExportedTypes().First(x => x.Name == "DerivedFromAbstractClass");
+
+            Assert.That(baseType.IsSealed, Is.False);
+            Assert.That(derivedType.IsSealed, Is.True);
         }
 
         private static string AssemblyDirectory
