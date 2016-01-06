@@ -78,13 +78,21 @@ namespace Seal.Test
         }
 
         [Test]
-        public void GivenNestedClass_ShouldMarkIsAsSealed()
+        public void GivenNestedClass_ShouldMarkItAsSealed()
         {
             var top = _assembly.GetExportedTypes().First(x => x.Name == "TopNestedClass");
             var nested = _assembly.GetExportedTypes().First(x => x.Name == "NestedClass");
 
             Assert.That(top.IsSealed, Is.True);
             Assert.That(nested.IsSealed, Is.True);
+        }
+
+        [Test]
+        public void GivenAttributeDecoratedClass_ShouldLeaveItUnsealed()
+        {
+            var type = _assembly.GetExportedTypes().First(x => x.Name == "AttributeDecoratedClass");
+
+            Assert.That(type.IsSealed, Is.False);
         }
     }
 }

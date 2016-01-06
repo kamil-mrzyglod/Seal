@@ -28,7 +28,9 @@ namespace Seal.Fody
         private IEnumerable<TypeDefinition> FilterProperTypes(IEnumerable<TypeDefinition> types)
         {
             return
-                types.Where(type => type.IsAbstract == false && type.IsSealed == false)
+                types.Where(type => type.IsAbstract == false && 
+                            type.IsSealed == false && 
+                            type.CustomAttributes.Any(a => a.AttributeType.ToString() == typeof(LeaveUnsealedAttribute).ToString()) == false)
                     .Where(type => ModuleDefinition.Types.All(derived => derived.BaseType != type));
         } 
     }
