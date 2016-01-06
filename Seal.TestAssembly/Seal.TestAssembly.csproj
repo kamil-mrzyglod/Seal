@@ -37,9 +37,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractClass.cs" />
+    <Compile Include="AttributeDecoratedClass.cs" />
     <Compile Include="DerivedClass.cs" />
+    <Compile Include="NestedClass.cs" />
     <Compile Include="NonSealedClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Seal.Fody\Seal.Fody.csproj">
+      <Project>{a0f0e376-1c70-4030-91b8-ebf5f175f18f}</Project>
+      <Name>Seal.Fody</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
