@@ -1,5 +1,5 @@
 # Seal
-A custom Fody weaver marking all non-virtual(abstract, non-sealed) types as sealed by default.
+A custom [Fody](https://github.com/Fody/Fody) weaver marking all non-virtual(abstract, non-sealed) types as sealed by default.
 
 Inspired by an excellent series of posts by Joe Duffy - http://joeduffyblog.com/2015/11/03/blogging-about-midori/
 
@@ -21,3 +21,6 @@ internally manipulate fields are accessible and not private.(…)
 
 ## How to install?
     Install-Package Seal.Fody
+
+## Usage
+Usage is super simple, just add new weaver to `FodyWeavers.xml`(if you install package from NuGet it will be done automatically).
