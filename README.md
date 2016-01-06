@@ -1,5 +1,5 @@
 # Seal
-A custom Fody weaver marking all non-virtual(abstract, non-sealed) types as sealed by default.
+A custom [Fody](https://github.com/Fody/Fody) weaver marking all non-virtual(abstract, non-sealed) types as sealed by default.
 
 Inspired by an excellent series of posts by Joe Duffy - http://joeduffyblog.com/2015/11/03/blogging-about-midori/
 
