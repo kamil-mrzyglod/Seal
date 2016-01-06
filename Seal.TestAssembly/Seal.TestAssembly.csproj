@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="AbstractClass.cs" />
     <Compile Include="DerivedClass.cs" />
+    <Compile Include="NestedClass.cs" />
     <Compile Include="NonSealedClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

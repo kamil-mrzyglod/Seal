@@ -30,6 +30,17 @@ namespace Seal.Test
             _assembly = Assembly.LoadFile(_weavedAssemblyName);
         }
 
+        private static string AssemblyDirectory
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         [Test]
         public void GivenNonSealedClass_ShouldSealIt()
         {
@@ -66,15 +77,14 @@ namespace Seal.Test
             Assert.That(derivedType.IsSealed, Is.True);
         }
 
-        private static string AssemblyDirectory
+        [Test]
+        public void GivenNestedClass_ShouldMarkIsAsSealed()
         {
-            get
-            {
-                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                var uri = new UriBuilder(codeBase);
-                var path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
+            var top = _assembly.GetExportedTypes().First(x => x.Name == "TopNestedClass");
+            var nested = _assembly.GetExportedTypes().First(x => x.Name == "NestedClass");
+
+            Assert.That(top.IsSealed, Is.True);
+            Assert.That(nested.IsSealed, Is.True);
         }
     }
 }
