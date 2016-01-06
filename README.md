@@ -20,4 +20,4 @@ internally manipulate fields are accessible and not private.(…)
 
 
 ## How to install?
-    Install-Package Virtuosity.Fody
+    Install-Package Seal.Fody
