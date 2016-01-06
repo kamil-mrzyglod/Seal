@@ -21,3 +21,6 @@ internally manipulate fields are accessible and not private.(…)
 
 ## How to install?
     Install-Package Seal.Fody
+
+## Usage
+Usage is super simple, just add new weaver to `FodyWeavers.xml`(if you install package from NuGet it will be done automatically).
